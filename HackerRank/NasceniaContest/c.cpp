@@ -5,7 +5,7 @@
 #include <cmath>
 #include <cstring>
 // #define MAX 1000
-#define MAX 100000
+#define MAX 1000001
 
 int dp[MAX];
 bool prime[MAX];
@@ -33,7 +33,7 @@ void SieveOfEratosthenes(){
 
 
 int main(){
-	// SieveOfEratosthenes();
+	SieveOfEratosthenes();
 	dp[0] = 0;
 	dp[1] = 1;
 	dp[2] = 2;
@@ -41,23 +41,25 @@ int main(){
 	dp[4] = 3;
 	dp[5] = 4;
 	for(int i = 6; i < MAX; i++){
-		int _sqrt = ceil(sqrt(i));
-		bool flag = false;
-		// std::cout<<i<<" : "<<_sqrt<<std::endl;
-		int max_move = i;
-		for(int j = _sqrt; ; j--){
-			if(i%j == 0){
-				if(dp[j] + 1 < max_move){
-					// std::cout<<i<<" : "<<_sqrt<<std::endl;
-					max_move = dp[j] + 1;
-					flag = true;
-					break;
-				}
-			}
-		}
-		if(!flag){
+		if(prime[i]){
 			dp[i] = dp[i-1] + 1;
 		}else{
+			int _sqrt = ceil(sqrt(i));
+			// bool flag = false;
+			// std::cout<<i<<" : "<<_sqrt<<std::endl;
+			int max_move = i;
+			for(int j = 2; j <= _sqrt; j++){
+				if(i%j == 0){
+					int max_f = i/j;
+					if(dp[max_f] + 1 < max_move){
+						// std::cout<<i<<" : "<<_sqrt<<std::endl;
+						max_move = dp[max_f] + 1;
+						// dp[i] = max_move;
+						// flag = true;
+						// break;
+					}
+				}
+			}
 			dp[i] = max_move;
 		}
 	}
